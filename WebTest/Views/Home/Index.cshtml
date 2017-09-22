@@ -1,0 +1,14 @@
+﻿@model List<string>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>20 top:</h2>
+
+
+@foreach (var item in Model)
+{
+    @item
+    <br />
+}
