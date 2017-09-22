@@ -11,6 +11,10 @@ namespace WebTest.Controllers
 {
     public class HomeController : Controller
     {
+        public ActionResult QuestionOne()
+        {
+            return View();
+        }
         // GET: Home
         public ActionResult Index()
         {
