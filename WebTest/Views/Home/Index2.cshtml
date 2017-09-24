@@ -1,0 +1,15 @@
+﻿@model Dictionary<string, int>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>20 top:</h2>
+
+<div class="results">
+    @foreach (var item in Model.Keys)
+    {
+        <span class="item">"@item" caught @Model[item] times.</span>
+        <br />
+    }
+</div>

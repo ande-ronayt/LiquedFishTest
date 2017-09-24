@@ -16,3 +16,37 @@ textarea {
     max-width: 280px;
 }
 
+.select-wrapper {
+    border: 2px solid #15228B;
+    width: 250px ;
+    height: 35px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #ADD8E8 url("http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png") 
+    no-repeat 95% 50%;
+    margin-bottom: 10px;
+}
+
+.select-wrapper select {
+    padding: 5px 8px;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    -moz-appearancea: none;
+}
+
+.select-style select:focus {
+    outline: none;
+}
+
+#loadUrl input{
+    width: 500px;
+    max-width: 500px;
+}
+
+input[type=submit] {
+    margin-top: 10px;
+}

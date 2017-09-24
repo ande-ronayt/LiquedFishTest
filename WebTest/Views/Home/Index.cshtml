@@ -1,14 +1,33 @@
-﻿@model List<string>
-
+﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Load Fishes";
+    var error = (string)TempData["Error"];
 }
-
-<h2>20 top:</h2>
-
-
-@foreach (var item in Model)
+<script src="~/Content/index.js"></script>
+<h2>How do you want to load fishes?</h2>
+@if (!string.IsNullOrWhiteSpace(error))
 {
-    @item
-    <br />
+    <div class="alert alert-danger">
+        @error
+    </div>
 }
+<br />
+<form action="/home/index" method="post" enctype="multipart/form-data">
+    <div class="select-wrapper">
+        <select name="ServiceType">
+            <option value="0">Load From Url</option>
+            <option value="1" selected>Local File</option>
+            <option value="2">Upload File</option>
+        </select>
+    </div>
+
+    <div id="loadUrl">
+        Url Name : <input name="url" type="text" value="https://liquid.fish/fishes.json" />
+    </div>
+    <div id="uploadFile">
+        Upload File: <input name="file" type="file" />
+    </div>
+
+    <br />
+    <input type="submit" value="Just Do It!" />
+</form>

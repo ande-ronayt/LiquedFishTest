@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
+using WebTest.Domain.Infrastracture;
+using WebTest.Models;
 
 namespace WebTest.Controllers
 {
@@ -15,64 +15,39 @@ namespace WebTest.Controllers
         {
             return View();
         }
-        // GET: Home
+
+        [HttpGet]
         public ActionResult Index()
         {
-            var url = @"https://liquid.fish/fishes.json";
-            //url = @"https://feeds.citibikenyc.com/stations/stations.json";
-            using (WebClient wc = new WebClient())
-            {
-                var result = new List<string>();
-                try
-                {
-                    var json = wc.DownloadString(url);
-                    var data = JsonConvert.DeserializeObject<Root>(json);
-                    result = CountFish(data.Caughts);
-                }
-                catch (Exception e)
-                {
-                    result.Add("Errror : " + e.Message);
-                }
-
-                return View(result);
-            }
+            return View();
         }
-
-        private List<string> CountFish(List<FishCaught> list)
+        
+        [HttpPost]
+        public ActionResult Index(RequestModel req)
         {
-            var result = new Dictionary<string, int>();
-            foreach (var item in list)
+            var builder = new FishServiceBuilder { Type = req.ServiceType };
+            switch (req.ServiceType)
             {
-                foreach (var name in item.fish_caught)
-                {
-                    if (result.Keys.Contains(name))
-                        result[name]++;
-                    else
-                        result.Add(name, 1);
-                }
+                case FishServiceType.FROM_URL:
+                    builder.Url = req.Url;
+                    break;
+                case FishServiceType.UPLOAD_FILE:
+                    builder.File = req.File;
+                    break;
             }
 
-            return result.OrderByDescending(x => x.Value).Take(20).Select(x => x.Key).ToList();
+            var fishService = builder.Create();
+            try
+            {
+                var result = fishService.GetTop20();
+
+                return View("Index2", result);
+            }
+            catch(Exception e)
+            {
+                TempData.Add("Error", "Error: " + e.Message);
+                return View();
+            }
         }
-
-    }
-
-    public class FishSort
-    {
-        public string Name { get; set; }
-
-        public int Count { get; set; }
-    }
-
-    public class FishCaught
-    {
-        public DateTime date { get; set; }
-
-        public List<string> fish_caught { get; set; }
-    }
-
-    public class Root
-    {
-        public List<FishCaught> Caughts { get; set; }
     }
 }
